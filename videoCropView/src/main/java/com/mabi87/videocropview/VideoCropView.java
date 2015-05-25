@@ -1,10 +1,10 @@
 /*
  * HttpRequestBuilder
- * https://github.com/mabi87/Android-FFmpegExecuter
+ * https://github.com/mabi87/Android-VideoCropView
  *
  * Mabi
  * crust87@gmail.com
- * last modify 2015-05-22
+ * last modify 2015-05-25
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package com.mabi87.videocropviewsample;
+package com.mabi87.videocropview;
 
 import android.content.Context;
 import android.content.Intent;
@@ -49,8 +49,8 @@ import android.widget.VideoView;
 import java.io.IOException;
 
 public class VideoCropView extends TextureView implements MediaPlayerControl {
-	private static final String LOG_TAG = "CropVideoView";
-
+	// Constants
+	private static final String LOG_TAG = "VideoCropView";
 	private static final int STATE_ERROR = -1;
 	private static final int STATE_IDLE = 0;
 	private static final int STATE_PREPARING = 1;
@@ -58,9 +58,6 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	private static final int STATE_PLAYING = 3;
 	private static final int STATE_PAUSED = 4;
 	private static final int STATE_PLAYBACK_COMPLETED = 5;
-
-	private int mCurrentState = STATE_IDLE;
-	private int mTargetState = STATE_IDLE;
 
 	// Components
 	protected Context mContext;
@@ -70,6 +67,7 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	private OnCompletionListener mOCompletionListener;
 	private OnErrorListener mOnErrorListener;
 	private OnPreparedListener mOnPreparedListener;
+	private OnTranslatePositionListener mOnTranslatePositionListener;
 
 	// Attributes
 	protected Uri uri;
@@ -77,8 +75,6 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	protected int mVideoHeight;
 	private int mCurrentBufferPercentage;
 	private int mSeekWhenPrepared;
-
-	// Editer Attributes
 	private float scaleX;
 	private float scaleY;
 	private float positionX;
@@ -92,11 +88,11 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	private int mRotate;
 
 	// Working Variables
+	private int mCurrentState = STATE_IDLE;
+	private int mTargetState = STATE_IDLE;
 	float pastX; // touche event past position x, y and move point
 	float pastY;
 	float movePoint;
-	
-	private OnTranslatePositionListener mOnTranslatePositionListener;
 
 	public VideoCropView(final Context context) {
 		super(context);
@@ -231,8 +227,6 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 		}
 
 		retriever.release();
-
-
 
 		openVideo();
 		requestLayout();
