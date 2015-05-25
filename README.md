@@ -26,6 +26,12 @@ and set image Uri
 mVideoCropView.setVideoURI(selectedVideoUri);
 ```
 
+![](./screenshot_01.png)
+
+swipe video and change view matrix
+
+![](./screenshot_02.png)
+
 ## Licence
 Copyright 2015 Mabi
 
