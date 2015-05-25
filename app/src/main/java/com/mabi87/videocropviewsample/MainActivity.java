@@ -9,11 +9,13 @@ import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 
+import com.mabi87.videocropview.VideoCropView;
+
 
 public class MainActivity extends ActionBarActivity {
 
     // Layout Components
-    private com.mabi87.videocropviewsample.VideoCropView mVideoCropView;
+    private VideoCropView mVideoCropView;
 
     // Attributes
     private String originalPath;
@@ -22,7 +24,7 @@ public class MainActivity extends ActionBarActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
 
-        mVideoCropView = (com.mabi87.videocropviewsample.VideoCropView) findViewById(R.id.cropVideoView);
+        mVideoCropView = (VideoCropView) findViewById(R.id.cropVideoView);
         mVideoCropView.setOnPreparedListener(new MediaPlayer.OnPreparedListener() {
 
             @Override
@@ -35,7 +37,12 @@ public class MainActivity extends ActionBarActivity {
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         if (requestCode == 1000 && resultCode == RESULT_OK) {
-            setOriginalVideo(data.getData());
+            Uri selectedVideoUri = data.getData();
+
+            originalPath = getRealPathFromURI(selectedVideoUri);
+
+            mVideoCropView.setVideoURI(selectedVideoUri);
+            mVideoCropView.seekTo(1);
         }
     }
 
@@ -44,14 +51,6 @@ public class MainActivity extends ActionBarActivity {
         lIntent.setType("video/*");
         lIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         startActivityForResult(lIntent, 1000);
-    }
-
-    // Initialization original video
-    private void setOriginalVideo(Uri uri) {
-        originalPath = getRealPathFromURI(uri);
-
-        mVideoCropView.setVideoURI(uri);
-        mVideoCropView.seekTo(1);
     }
 
     public String getRealPathFromURI(Uri contentUri) {
