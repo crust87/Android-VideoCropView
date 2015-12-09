@@ -23,6 +23,7 @@ package com.mabi87.videocropview;
 
 import android.content.Context;
 import android.content.Intent;
+import android.content.res.TypedArray;
 import android.graphics.Matrix;
 import android.graphics.SurfaceTexture;
 import android.media.AudioManager;
@@ -35,6 +36,7 @@ import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.media.MediaPlayer.OnVideoSizeChangedListener;
 import android.net.Uri;
+import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -70,6 +72,8 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	private OnTranslatePositionListener mOnTranslatePositionListener;
 
 	// Attributes
+	private int mWidth;
+	private int mHeight;
 	protected Uri uri;
 	protected int mVideoWidth;
 	protected int mVideoHeight;
@@ -97,25 +101,44 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	public VideoCropView(final Context context) {
 		super(context);
 		mContext = context;
+
+		initAttributes();
 		initVideoView();
 	}
 
 	public VideoCropView(final Context context, final AttributeSet attrs) {
 		super(context, attrs);
 		mContext = context;
+
+		initAttributes(context, attrs, 0);
 		initVideoView();
 	}
 
-	public VideoCropView(Context context, AttributeSet attrs, int defStyle) {
-		super(context, attrs, defStyle);
+	public VideoCropView(Context context, AttributeSet attrs, int defStyleAttr) {
+		super(context, attrs, defStyleAttr);
 		mContext = context;
+
+		initAttributes(context, attrs, defStyleAttr);
 		initVideoView();
+	}
+
+	private void initAttributes() {
+		mWidth = 3;
+		mHeight = 4;
+	}
+
+	private void initAttributes(Context context, AttributeSet attrs, int defStyleAttr) {
+		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VideoCropView, defStyleAttr, 0);
+
+		mWidth = typedArray.getInteger(R.styleable.VideoCropView_width, 3);
+		mHeight = typedArray.getInteger(R.styleable.VideoCropView_height, 4);
 	}
 
 	@Override
 	protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
 		int width = MeasureSpec.getSize(widthMeasureSpec);
-		setMeasuredDimension(width, (int) (width / 0.75));
+		int height = (width / mWidth) * mHeight;
+		setMeasuredDimension(width, height);
 	}
 
 	@Override
