@@ -5,6 +5,12 @@ this version provide aspect ratio only 3:4.
 next version will provide several aspect ratio
 
 ## Example
+
+add build.gradle<br />
+``` groovy
+compile 'com.crust87:video-crop-view:1.0.0'
+```
+
 append your layout xml
 ```xml
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
