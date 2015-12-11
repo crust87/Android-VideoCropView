@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <declare-styleable name="VideoCropView">
-        <attr name="width" format="integer" />
-        <attr name="height" format="integer" />
+        <attr name="ratio_width" format="integer" />
+        <attr name="ratio_height" format="integer" />
     </declare-styleable>
 </resources>

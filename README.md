@@ -7,10 +7,20 @@ next version will provide several aspect ratio
 ## Example
 append your layout xml
 ```xml
-<com.mabi87.videocropviewsample.VideoCropView
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent" >
+
+    <com.mabi87.videocropview.VideoCropView
         android:id="@+id/cropVideoView"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        app:ratio_height="4"
+        app:ratio_width="3" />
+
+</FrameLayout>
 ```
 
 request video

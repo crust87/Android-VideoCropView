@@ -130,8 +130,8 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	private void initAttributes(Context context, AttributeSet attrs, int defStyleAttr) {
 		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VideoCropView, defStyleAttr, 0);
 
-		mWidth = typedArray.getInteger(R.styleable.VideoCropView_width, 3);
-		mHeight = typedArray.getInteger(R.styleable.VideoCropView_height, 4);
+		mWidth = typedArray.getInteger(R.styleable.VideoCropView_ratio_width, 3);
+		mHeight = typedArray.getInteger(R.styleable.VideoCropView_ratio_height, 4);
 	}
 
 	@Override
