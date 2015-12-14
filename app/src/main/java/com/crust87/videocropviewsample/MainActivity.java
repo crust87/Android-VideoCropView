@@ -1,4 +1,4 @@
-package com.mabi87.videocropviewsample;
+package com.crust87.videocropviewsample;
 
 import android.content.Intent;
 import android.database.Cursor;
@@ -9,8 +9,7 @@ import android.provider.MediaStore;
 import android.support.v7.app.ActionBarActivity;
 import android.view.View;
 
-import com.mabi87.videocropview.VideoCropView;
-
+import com.crust87.videocropview.VideoCropView;
 
 public class MainActivity extends ActionBarActivity {
 

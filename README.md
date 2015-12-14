@@ -19,7 +19,7 @@ append your layout xml
     android:layout_width="match_parent"
     android:layout_height="match_parent" >
 
-    <com.mabi87.videocropview.VideoCropView
+    <com.crust87.videocropview.VideoCropView
         android:id="@+id/cropVideoView"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

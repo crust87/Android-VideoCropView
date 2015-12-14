@@ -1,6 +1,6 @@
 /*
  * HttpRequestBuilder
- * https://github.com/mabi87/Android-VideoCropView
+ * https://github.com/crust87/Android-VideoCropView
  *
  * Mabi
  * crust87@gmail.com
@@ -19,7 +19,7 @@
  * limitations under the License.
  */
 
-package com.mabi87.videocropview;
+package com.crust87.videocropview;
 
 import android.content.Context;
 import android.content.Intent;
