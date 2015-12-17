@@ -8,7 +8,7 @@ next version will provide several aspect ratio
 
 add build.gradle<br />
 ``` groovy
-compile 'com.crust87:video-crop-view:1.0.1'
+compile 'com.crust87:video-crop-view:1.0.2'
 ```
 
 append your layout xml

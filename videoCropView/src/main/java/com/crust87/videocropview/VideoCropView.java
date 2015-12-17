@@ -143,6 +143,10 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 
 	@Override
 	public boolean onTouchEvent(MotionEvent event) {
+		if(mCurrentState == STATE_ERROR || mCurrentState == STATE_IDLE || mCurrentState == STATE_PREPARING) {
+			return false;
+		}
+
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
 				pastX = event.getX();
