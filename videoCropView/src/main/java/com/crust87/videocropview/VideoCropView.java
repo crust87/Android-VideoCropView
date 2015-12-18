@@ -660,10 +660,12 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 		mRatioWidth = ratioWidth;
 		mRatioHeight = ratioHeight;
 
-		int seek = mMediaPlayer.getCurrentPosition();
+		int seek = getCurrentPosition();
+
 		requestLayout();
 		invalidate();
 		openVideo();
+
 		seekTo(seek);
 	}
 
