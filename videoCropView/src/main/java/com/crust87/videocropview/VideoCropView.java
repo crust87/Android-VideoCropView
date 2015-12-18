@@ -74,7 +74,7 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	// Attributes
 	private int mRatioWidth;
 	private int mRatioHeight;
-	protected Uri uri;
+	protected Uri mUri;
 	protected int mVideoWidth;
 	protected int mVideoHeight;
 	private int mCurrentBufferPercentage;
@@ -236,7 +236,7 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	}
 
 	public void setVideoURI(Uri pVideoURI) {
-		uri = pVideoURI;
+		mUri = pVideoURI;
 		mSeekWhenPrepared = 0;
 
 		MediaMetadataRetriever retriever = new  MediaMetadataRetriever();
@@ -271,7 +271,7 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	}
 
 	public void openVideo() {
-		if ((uri == null) || (mSurface == null)) {
+		if ((mUri == null) || (mSurface == null)) {
 			// not ready for playback just yet, will try again later
 			return;
 		}
@@ -297,7 +297,7 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 			mMediaPlayer.setOnInfoListener(mInfoListener);
 			mMediaPlayer.setOnBufferingUpdateListener(mBufferingUpdateListener);
 			mCurrentBufferPercentage = 0;
-			mMediaPlayer.setDataSource(mContext, uri);
+			mMediaPlayer.setDataSource(mContext, mUri);
 			mMediaPlayer.setSurface(mSurface);
 			mMediaPlayer.setAudioStreamType(AudioManager.STREAM_MUSIC);
 
@@ -660,8 +660,11 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 		mRatioWidth = ratioWidth;
 		mRatioHeight = ratioHeight;
 
+		int seek = mMediaPlayer.getCurrentPosition();
 		requestLayout();
 		invalidate();
+		openVideo();
+		seekTo(seek);
 	}
 
 	public float getRealPositionX() {
