@@ -67,4 +67,16 @@ public class MainActivity extends ActionBarActivity {
         }
     }
 
+    public void onButton43Clicked(View view) {
+        mVideoCropView.setRatio(4, 3);
+    }
+
+    public void onButton11Clicked(View view) {
+        mVideoCropView.setRatio(1, 1);
+    }
+
+    public void onButton34Clicked(View view) {
+        mVideoCropView.setRatio(3, 4);
+    }
+
 }

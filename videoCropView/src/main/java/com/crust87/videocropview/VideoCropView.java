@@ -72,8 +72,8 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	private OnTranslatePositionListener mOnTranslatePositionListener;
 
 	// Attributes
-	private int mWidth;
-	private int mHeight;
+	private int mRatioWidth;
+	private int mRatioHeight;
 	protected Uri uri;
 	protected int mVideoWidth;
 	protected int mVideoHeight;
@@ -123,21 +123,21 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	}
 
 	private void initAttributes() {
-		mWidth = 3;
-		mHeight = 4;
+		mRatioWidth = 3;
+		mRatioHeight = 4;
 	}
 
 	private void initAttributes(Context context, AttributeSet attrs, int defStyleAttr) {
 		TypedArray typedArray = context.obtainStyledAttributes(attrs, R.styleable.VideoCropView, defStyleAttr, 0);
 
-		mWidth = typedArray.getInteger(R.styleable.VideoCropView_ratio_width, 3);
-		mHeight = typedArray.getInteger(R.styleable.VideoCropView_ratio_height, 4);
+		mRatioWidth = typedArray.getInteger(R.styleable.VideoCropView_ratio_width, 3);
+		mRatioHeight = typedArray.getInteger(R.styleable.VideoCropView_ratio_height, 4);
 	}
 
 	@Override
 	protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
 		int width = MeasureSpec.getSize(widthMeasureSpec);
-		int height = (width / mWidth) * mHeight;
+		int height = (width / mRatioWidth) * mRatioHeight;
 		setMeasuredDimension(width, height);
 	}
 
@@ -653,6 +653,14 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 		
 		matrix.postTranslate(x, y);
 		setTransform(matrix);
+		invalidate();
+	}
+
+	public void setRatio(int ratioWidth, int ratioHeight) {
+		mRatioWidth = ratioWidth;
+		mRatioHeight = ratioHeight;
+
+		requestLayout();
 		invalidate();
 	}
 
