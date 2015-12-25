@@ -24,25 +24,32 @@
             android:layout_height="wrap_content">
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onButton43Clicked"
                 android:text="4 : 3" />
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onButton11Clicked"
                 android:text="1 : 1" />
 
             <Button
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:onClick="onButton34Clicked"
                 android:text="3 : 4" />
+
+            <Button
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:onClick="onButtonOriginalClicked"
+                android:text="ORIGINAL" />
         </LinearLayout>
 
         <LinearLayout

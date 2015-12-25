@@ -79,4 +79,7 @@ public class MainActivity extends ActionBarActivity {
         mVideoCropView.setRatio(3, 4);
     }
 
+    public void onButtonOriginalClicked(View view) {
+        mVideoCropView.setOriginalRatio();
+    }
 }

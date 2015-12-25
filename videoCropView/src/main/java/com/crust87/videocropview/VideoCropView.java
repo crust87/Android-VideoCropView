@@ -36,7 +36,6 @@ import android.media.MediaPlayer.OnInfoListener;
 import android.media.MediaPlayer.OnPreparedListener;
 import android.media.MediaPlayer.OnVideoSizeChangedListener;
 import android.net.Uri;
-import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.Log;
 import android.view.MotionEvent;
@@ -72,8 +71,8 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	private OnTranslatePositionListener mOnTranslatePositionListener;
 
 	// Attributes
-	private int mRatioWidth;
-	private int mRatioHeight;
+	private float mRatioWidth;
+	private float mRatioHeight;
 	protected Uri mUri;
 	protected int mVideoWidth;
 	protected int mVideoHeight;
@@ -137,7 +136,8 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	@Override
 	protected void onMeasure(final int widthMeasureSpec, final int heightMeasureSpec) {
 		int width = MeasureSpec.getSize(widthMeasureSpec);
-		int height = (width / mRatioWidth) * mRatioHeight;
+		int height = (int) ((width / mRatioWidth) * mRatioHeight);
+
 		setMeasuredDimension(width, height);
 	}
 
@@ -654,6 +654,23 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 		matrix.postTranslate(x, y);
 		setTransform(matrix);
 		invalidate();
+	}
+
+	public void setOriginalRatio() {
+		if(mVideoWidth != 0 && mVideoHeight != 0) {
+			int gcd = gcd(mVideoWidth, mVideoHeight);
+			setRatio(mVideoWidth / gcd, mVideoHeight / gcd);
+		}
+	}
+
+	public int gcd(int a, int b) {
+		while (b != 0) {
+			int temp = a % b;
+			a = b;
+			b = temp;
+		}
+
+		return Math.abs(a);
 	}
 
 	public void setRatio(int ratioWidth, int ratioHeight) {
