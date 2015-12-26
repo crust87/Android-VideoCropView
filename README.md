@@ -1,11 +1,15 @@
 # Android-VideoCropView
 ViewView for crop video
 
+## Update
+### 1.1.1
+add original ratio option
+
 ## Example
 
 add build.gradle<br />
 ``` groovy
-compile 'com.crust87:video-crop-view:1.1.0'
+compile 'com.crust87:video-crop-view:1.1.1'
 ```
 
 append your layout xml
