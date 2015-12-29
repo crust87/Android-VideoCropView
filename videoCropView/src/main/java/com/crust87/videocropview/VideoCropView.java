@@ -60,7 +60,7 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	private static final int STATE_PAUSED = 4;
 	private static final int STATE_PLAYBACK_COMPLETED = 5;
 
-	// Components
+	// MediaPlayer Components
 	protected Context mContext;
 	private MediaPlayer mMediaPlayer;
 	private Surface mSurface;
@@ -70,33 +70,39 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	private OnPreparedListener mOnPreparedListener;
 	private OnTranslatePositionListener mOnTranslatePositionListener;
 
-	// Attributes
-	private float mRatioWidth;
-	private float mRatioHeight;
+	// CropView Components
+	private Matrix mMatrix;
+
+	// MediaPlayer Attributes
 	protected Uri mUri;
-	protected int mVideoWidth;
-	protected int mVideoHeight;
 	private int mCurrentBufferPercentage;
 	private int mSeekWhenPrepared;
-	private float scaleX;
-	private float scaleY;
-	private float positionX;
-	private float positionY;
-	private float boundX;
-	private float boundY;
-	private int viewWidth;
-	private int viewHeight;
-	private Matrix matrix;
-	private float scale;
+	protected int mVideoWidth;
+	protected int mVideoHeight;
+
+	// CropView Attributes
+	private float mRatioWidth;
+	private float mRatioHeight;
+	private float mPositionX;
+	private float mPositionY;
+	private float mBoundX;
+	private float mBoundY;
 	private int mRotate;
+	private float mScaleX;
+	private float mScaleY;
+	private float mScale;
 
 	// Working Variables
 	private int mCurrentState = STATE_IDLE;
 	private int mTargetState = STATE_IDLE;
-	float pastX; // touche event past position x, y and move point
-	float pastY;
-	float movePoint;
 
+	// Touch Event
+	// past position x, y and move point
+	float mPastX;
+	float mPastY;
+	float mTouchDistance;
+
+	// Constructors
 	public VideoCropView(final Context context) {
 		super(context);
 		mContext = context;
@@ -149,19 +155,19 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 
 		switch (event.getAction()) {
 			case MotionEvent.ACTION_DOWN:
-				pastX = event.getX();
-				pastY = event.getY();
-				movePoint = 0;
+				mPastX = event.getX();
+				mPastY = event.getY();
+				mTouchDistance = 0;
 			case MotionEvent.ACTION_MOVE:
-				float dx = event.getX() - pastX;
-				float dy = event.getY() - pastY;
+				float dx = event.getX() - mPastX;
+				float dy = event.getY() - mPastY;
 				updateViewPosition(dx, dy);
-				pastX = event.getX();
-				pastY = event.getY();
-				movePoint += (Math.abs(dx) + Math.abs(dy));
+				mPastX = event.getX();
+				mPastY = event.getY();
+				mTouchDistance += (Math.abs(dx) + Math.abs(dy));
 				break;
 			case MotionEvent.ACTION_UP:
-				if (movePoint < 25) {
+				if (mTouchDistance < 25) {
 					if (isPlaying()) {
 						pause();
 					} else {
@@ -169,7 +175,7 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 					}
 				}
 
-				movePoint = 0;
+				mTouchDistance = 0;
 				break;
 		}
 
@@ -574,41 +580,42 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	}
 
 	public float getScale() {
-		return scale;
+		return mScale;
 	}
 
 	private void initVideo() {
 		try {
-			scaleX = 1.0f;
-			scaleY = 1.0f;
-			positionX = 0;
-			positionY = 0;
-			boundX = 0;
-			boundY = 0;
-			viewWidth = getWidth();
-			viewHeight = getHeight();
-			matrix = new Matrix();
+			int viewWidth = getWidth();
+			int viewHeight = getHeight();
 
-			scaleX = (float) mVideoWidth / viewWidth;
-			scaleY = (float) mVideoHeight / viewHeight;
-			
-			boundX = viewWidth - mVideoWidth / scaleY;
-			boundY = viewHeight - mVideoHeight / scaleX;
+			mScaleX = 1.0f;
+			mScaleY = 1.0f;
+			mPositionX = 0;
+			mPositionY = 0;
+			mBoundX = 0;
+			mBoundY = 0;
+			mMatrix = new Matrix();
+
+			mScaleX = (float) mVideoWidth / viewWidth;
+			mScaleY = (float) mVideoHeight / viewHeight;
+
+			mBoundX = viewWidth - mVideoWidth / mScaleY;
+			mBoundY = viewHeight - mVideoHeight / mScaleX;
 				
-			if(scaleX < scaleY) {
-				scale = scaleX;
-				scaleY = scaleY * (1.0f / scaleX); 
-				scaleX = 1.0f;
-				boundX = 0;
+			if(mScaleX < mScaleY) {
+				mScale = mScaleX;
+				mScaleY = mScaleY * (1.0f / mScaleX);
+				mScaleX = 1.0f;
+				mBoundX = 0;
 			} else {
-				scale = scaleY;
-				scaleX = scaleX * (1.0f / scaleY); 
-				scaleY = 1.0f;
-				boundY = 0;
+				mScale = mScaleY;
+				mScaleX = mScaleX * (1.0f / mScaleY);
+				mScaleY = 1.0f;
+				mBoundY = 0;
 			}
-			
-			matrix.setScale(scaleX, scaleY);
-			setTransform(matrix);
+
+			mMatrix.setScale(mScaleX, mScaleY);
+			setTransform(mMatrix);
 		} catch (NumberFormatException e) {
 			e.printStackTrace();
 		}
@@ -616,43 +623,43 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 
 	public void updateViewPosition(float x, float y) {
 		
-		float nextX = positionX + x;
-		float nextY = positionY + y;
+		float nextX = mPositionX + x;
+		float nextY = mPositionY + y;
 		
-		if(scaleX == 1.0f) {
+		if(mScaleX == 1.0f) {
 			x = 0;
 		} else {
 			if(nextX > 0) {
-				x = -positionX;
-				positionX = positionX + x;
-			} else if(nextX < boundX) {
-				x = boundX - positionX;
-				positionX = positionX + x;
+				x = -mPositionX;
+				mPositionX = mPositionX + x;
+			} else if(nextX < mBoundX) {
+				x = mBoundX - mPositionX;
+				mPositionX = mPositionX + x;
 			} else {
-				positionX = nextX;
+				mPositionX = nextX;
 			}
 		}
 		
-		if(scaleY == 1.0f) {
+		if(mScaleY == 1.0f) {
 			y = 0;
 		} else {
 			if(nextY > 0) {
-				y = -positionY;
-				positionY = positionY + y;
-			} else if(nextY < boundY) {
-				y = boundY - positionY;
-				positionY = positionY + y; 
+				y = -mPositionY;
+				mPositionY = mPositionY + y;
+			} else if(nextY < mBoundY) {
+				y = mBoundY - mPositionY;
+				mPositionY = mPositionY + y;
 			} else {
-				positionY = nextY;
+				mPositionY = nextY;
 			}
 		}
 		
 		if(mOnTranslatePositionListener != null) {
-			mOnTranslatePositionListener.onTranslatePosition(positionX, positionY, positionX * -scale, positionY * -scale);
+			mOnTranslatePositionListener.onTranslatePosition(mPositionX, mPositionY, mPositionX * -mScale, mPositionY * -mScale);
 		}
-		
-		matrix.postTranslate(x, y);
-		setTransform(matrix);
+
+		mMatrix.postTranslate(x, y);
+		setTransform(mMatrix);
 		invalidate();
 	}
 
@@ -663,17 +670,17 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 		}
 	}
 
-	public int gcd(int a, int b) {
-		while (b != 0) {
-			int temp = a % b;
-			a = b;
-			b = temp;
+	public int gcd(int n, int m) {
+		while (m != 0) {
+			int t = n % m;
+			n = m;
+			m = t;
 		}
 
-		return Math.abs(a);
+		return Math.abs(n);
 	}
 
-	public void setRatio(int ratioWidth, int ratioHeight) {
+	public void setRatio(float ratioWidth, float ratioHeight) {
 		mRatioWidth = ratioWidth;
 		mRatioHeight = ratioHeight;
 
@@ -686,16 +693,9 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 		seekTo(seek);
 	}
 
-	public void setRatioWidth(float ratioWidth) {
-		mRatioWidth = ratioWidth;
-	}
 
 	public float getRatioWidth() {
 		return mRatioWidth;
-	}
-
-	public void setRatioHeight(float ratioHeight) {
-		mRatioHeight = ratioHeight;
 	}
 
 	public float getRatioHeight() {
@@ -703,11 +703,11 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 	}
 
 	public float getRealPositionX() {
-		return positionX * -scale;
+		return mPositionX * -mScale;
 	}
 
 	public float getRealPositionY() {
-		return positionY * -scale;
+		return mPositionY * -mScale;
 	}
 
 	public int getVideoWidth() {
