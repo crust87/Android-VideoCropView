@@ -686,6 +686,14 @@ public class VideoCropView extends TextureView implements MediaPlayerControl {
 		seekTo(seek);
 	}
 
+	public int getRatioWidth() {
+		return mRatioWidth;
+	}
+
+	public int getRatioHeight() {
+		return mRatioHeight;
+	}
+
 	public float getRealPositionX() {
 		return positionX * -scale;
 	}
