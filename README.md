@@ -49,7 +49,7 @@ swipe video and change view matrix
 
 ![](./screenshot_02.png)
 
-## Licence
+## License
 Copyright 2015 Mabi
 
 Licensed under the Apache License, Version 2.0 (the "License");<br/>
