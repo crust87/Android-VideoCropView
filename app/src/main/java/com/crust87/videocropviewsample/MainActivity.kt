@@ -6,6 +6,8 @@ import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
 import kotlinx.android.synthetic.main.activity_main.*
 
+const val REQUEST_CODE_LOAD_VIDEO = 1000
+
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -13,13 +15,6 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         videoCropView.setOnPreparedListener { videoCropView.start() }
-
-        buttonLoad.setOnClickListener {
-            val lIntent = Intent(Intent.ACTION_PICK)
-            lIntent.type = "video/*"
-            lIntent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
-            startActivityForResult(lIntent, 1000)
-        }
 
         button43.setOnClickListener {
             videoCropView.setRatio(4f, 3f)
@@ -36,10 +31,19 @@ class MainActivity : AppCompatActivity() {
         buttonOriginal.setOnClickListener {
             videoCropView.setOriginalRatio()
         }
+
+        buttonLoad.setOnClickListener {
+            val intent = Intent(Intent.ACTION_PICK).apply {
+                type = "video/*"
+                addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            }
+
+            startActivityForResult(intent, REQUEST_CODE_LOAD_VIDEO)
+        }
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == 1000 && resultCode == Activity.RESULT_OK) {
+        if (requestCode == REQUEST_CODE_LOAD_VIDEO && resultCode == Activity.RESULT_OK) {
             data?.data?.let {
                 videoCropView.setVideoURI(it)
                 videoCropView.seekTo(1)
