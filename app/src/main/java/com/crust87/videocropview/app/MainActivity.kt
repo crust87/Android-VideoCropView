@@ -1,9 +1,10 @@
-package com.crust87.videocropviewsample
+package com.crust87.videocropview.app
 
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.support.v7.app.AppCompatActivity
+import com.crust87.videocropviewsample.R
 import kotlinx.android.synthetic.main.activity_main.*
 
 const val REQUEST_CODE_LOAD_VIDEO = 1000

@@ -236,8 +236,18 @@ class VideoCropView : TextureView, MediaPlayerControl {
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        val width = View.MeasureSpec.getSize(widthMeasureSpec)
-        val height = (width / ratioWidth * ratioHeight).toInt()
+        var width = View.MeasureSpec.getSize(widthMeasureSpec)
+        var height = View.MeasureSpec.getSize(heightMeasureSpec)
+        val resizedWidth = (height / ratioHeight * ratioWidth).toInt()
+        val resizedHeight = (width / ratioWidth * ratioHeight).toInt()
+
+        Log.d("WTF", "$width $height $resizedWidth $resizedHeight")
+
+        if (resizedWidth > width) {
+            height = resizedHeight
+        } else if (resizedHeight > height) {
+            width = resizedWidth
+        }
 
         setMeasuredDimension(width, height)
     }
