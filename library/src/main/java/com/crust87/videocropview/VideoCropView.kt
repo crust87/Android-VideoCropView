@@ -626,18 +626,6 @@ class VideoCropView : TextureView, MediaPlayerControl {
         }
     }
 
-    private fun gcd(i: Int, j: Int): Int {
-        var n = i
-        var m = j
-        while (m != 0) {
-            val t = n % m
-            n = m
-            m = t
-        }
-
-        return Math.abs(n)
-    }
-
     fun setRatio(ratioWidth: Float, ratioHeight: Float) {
         this.ratioWidth = ratioWidth
         this.ratioHeight = ratioHeight
