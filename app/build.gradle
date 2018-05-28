@@ -11,7 +11,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 23
         versionCode 7
-        versionName "1.2.0"
+        versionName "1.4.0"
     }
     buildTypes {
         release {
@@ -30,7 +30,7 @@ dependencies {
     implementation fileTree(include: ['*.jar'], dir: 'libs')
     implementation 'com.android.support:appcompat-v7:23.4.0'
     implementation 'com.android.support.constraint:constraint-layout:1.1.0'
-    implementation project(':library')
+    implementation 'com.crust87:video-crop-view:1.4.0'
 }
 repositories {
     mavenCentral()

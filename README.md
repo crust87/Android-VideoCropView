@@ -9,25 +9,35 @@ add original ratio option
 
 add build.gradle<br />
 ``` groovy
-compile 'com.crust87:video-crop-view:1.1.1'
+implementation 'com.crust87:video-crop-view:1.4.0'
 ```
 
 append your layout xml
 ```xml
-<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent" >
+    android:layout_height="match_parent">
 
-    <com.crust87.videocropview.VideoCropView
-        android:id="@+id/cropVideoView"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        app:ratio_height="4"
-        app:ratio_width="3" />
+    <FrameLayout
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintDimensionRatio="1:1"
+        android:layout_width="0dp"
+        android:layout_height="0dp">
 
-</FrameLayout>
+        <com.crust87.videocropview.VideoCropView
+            android:id="@+id/videoCropView"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            app:ratio_height="4"
+            app:ratio_width="3" />
+
+    </FrameLayout>
+</android.support.constraint.ConstraintLayout>
 ```
 
 request video

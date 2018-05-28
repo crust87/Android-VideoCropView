@@ -5,7 +5,7 @@ publish {
     userOrg = 'mabi87'
     groupId = 'com.crust87'
     artifactId = 'video-crop-view'
-    publishVersion = '1.2.0'
+    publishVersion = '1.4.0'
     desc = 'Video Crop View for Android'
     website = 'https://github.com/crust87/Android-VideoCropView'
     issueTracker = "${website}/issues"
@@ -20,7 +20,7 @@ android {
         minSdkVersion 14
         targetSdkVersion 22
         versionCode 7
-        versionName "1.2.0"
+        versionName "1.4.0"
     }
     buildTypes {
         release {
